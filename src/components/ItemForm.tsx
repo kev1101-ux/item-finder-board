@@ -20,7 +20,7 @@ interface ItemFormProps {
 }
 
 export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
-  const [formData, setFormData] = useState<Omit<Item, 'id' | 'imageUrl'>>({
+  const [formData, setFormData] = useState<Omit<Item, 'id' | 'imageData'>>({
     item_name: "",
     item_type: "Lost", // Default value
     description: "",
@@ -78,17 +78,17 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-2xl">Post an Item</CardTitle>
-        <CardDescription>
-          Share details about a lost or found item to help reunite it with its owner
+    <Card className="w-full max-w-2xl mx-auto shadow-lg bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl">
+      <CardHeader className="text-center">
+        <CardTitle className="text-3xl font-bold radiant-text">Post an Item</CardTitle>
+        <CardDescription className="text-muted-foreground">
+          Help reunite items with their owners by sharing details below
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="item_name">Item Name *</Label>
+          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <Label htmlFor="item_name" className="text-lg font-semibold text-gray-800">Item Name *</Label>
             <Input
               id="item_name"
               placeholder="e.g., Blue Backpack, iPhone 13"
@@ -96,11 +96,12 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
               onChange={(e) => setFormData({ ...formData, item_name: e.target.value })}
               required
               disabled={isSubmitting}
+              className="mt-2 bg-white text-black"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="item_type">Item Type *</Label>
+          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <Label htmlFor="item_type" className="text-lg font-semibold text-gray-800">Item Type *</Label>
             <Select
               value={formData.item_type}
               onValueChange={(value: "Lost" | "Found") =>
@@ -109,7 +110,7 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
               required
               disabled={isSubmitting}
             >
-              <SelectTrigger id="item_type">
+              <SelectTrigger id="item_type" className="mt-2 bg-white text-black">
                 <SelectValue placeholder="Select item type" />
               </SelectTrigger>
               <SelectContent className="bg-popover z-50">
@@ -121,8 +122,8 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
 
           {/* Conditional Image Upload for 'Found' items */}
           {formData.item_type === 'Found' && (
-            <div className="space-y-2">
-                <Label htmlFor="item_image">Image of Found Item *</Label>
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <Label htmlFor="item_image" className="text-lg font-semibold text-gray-800">Image of Found Item *</Label>
                 <Input 
                     id="item_image" 
                     type="file" 
@@ -130,13 +131,14 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
                     required
                     disabled={isSubmitting}
                     accept="image/*" // Accept only image files
+                    className="mt-2 bg-white text-black"
                 />
-                {imageFile && <p className="text-sm text-muted-foreground">Selected: {imageFile.name}</p>}
+                {imageFile && <p className="text-sm text-muted-foreground mt-2">Selected: {imageFile.name}</p>}
             </div>
            )}
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Description *</Label>
+          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <Label htmlFor="description" className="text-lg font-semibold text-gray-800">Description *</Label>
             <Textarea
               id="description"
               placeholder="Provide details about the item (color, brand, distinguishing features)"
@@ -145,11 +147,12 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
               required
               rows={4}
               disabled={isSubmitting}
+              className="mt-2 bg-white text-black"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="location">Location *</Label>
+          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <Label htmlFor="location" className="text-lg font-semibold text-gray-800">Location *</Label>
             <Input
               id="location"
               placeholder="Where was it lost/found?"
@@ -157,11 +160,12 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
               onChange={(e) => setFormData({ ...formData, location: e.target.value })}
               required
               disabled={isSubmitting}
+              className="mt-2 bg-white text-black"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="date">Date *</Label>
+          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <Label htmlFor="date" className="text-lg font-semibold text-gray-800">Date *</Label>
             <Input
               id="date"
               type="date"
@@ -169,10 +173,15 @@ export const ItemForm = ({ onItemAdded }: ItemFormProps) => {
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               required
               disabled={isSubmitting}
+              className="mt-2 bg-white text-black"
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button 
+            type="submit" 
+            className="w-full text-lg font-bold text-white bg-gradient-to-r from-primary to-lost hover:from-lost hover:to-primary transition-all duration-300 transform hover:scale-105 shadow-lg" 
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Posting..." : "Post Item"}
           </Button>
         </form>
